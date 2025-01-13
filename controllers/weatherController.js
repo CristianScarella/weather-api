@@ -18,7 +18,7 @@ export const getWeatherByCity = async (req, res, next) => {
 
     res.status(200).json(weatherData)
   } catch (error) {
-    next()
+    next(error)
   }
 }
 
