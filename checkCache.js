@@ -1,29 +1,23 @@
-import { createClient } from 'redis'
-
-const initConnectionRedisDB = async () => {
-  try {
-    const client = createClient()
-    await client.connect({ host: '127.0.0.1', port: 6379 })
-    console.log('Redis Client: connected successfully')
-
-    return client
-  } catch (err) {
-    console.log('Redis Client error:', err.message)
-    throw new Error('Redis Client: An error has occurred')
-  }
-}
+import { client } from './config/config.js'
 
 export const getDataFromCache = async (city) => {
-  const reply = await client.get(city)
+  try {
+    const reply = await client.get(city)
 
-  if (!reply) return
-
-  return JSON.parse(reply)
+    if (!reply) return
+    return JSON.parse(reply)
+  } catch (error) {
+    console.error('Redis Error in getDataFromCache:', error.message)
+    throw new Error('Redis service is unavailable.')
+  }
 }
 
 export const setDataCache = async (params) => {
   const { city, dataFromCity } = params
-  await client.set(city, JSON.stringify(dataFromCity), { EX: 3600 }) // Ver si está ok esto, debido a que se pasa un argumento mas. Falta capturar el error por las dudas
+  try {
+    await client.set(city, JSON.stringify(dataFromCity), { EX: 3600 }) // Ver si está ok esto, debido a que se pasa un argumento mas. Falta capturar el error por las dudas
+  } catch (error) {
+    console.error('Redis Error in setDataCache:', error.message)
+    throw new Error('Failed to save data to Redis.')
+  }
 }
-
-const client = await initConnectionRedisDB()
