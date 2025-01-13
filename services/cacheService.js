@@ -1,4 +1,4 @@
-import { client } from './config/config.js'
+import { client } from '../config/config.js'
 
 export const getDataFromCache = async (city) => {
   try {

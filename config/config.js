@@ -11,7 +11,7 @@ const client = createClient({
         console.error('Redis client failed to reconnect after 10 attempts.')
         return new Error('Redis: Reconnection limit exceeded.')
       }
-      return Math.min(retries * 100, 3000) // Tiempo entre intentos
+      return retries * 200
     }
   }
 })
