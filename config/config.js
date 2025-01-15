@@ -1,10 +1,11 @@
 import 'dotenv/config'
 import { createClient } from 'redis'
+import { CONFIG } from './envConfig.js'
 
 const client = createClient({
   socket: {
-    host: '127.0.0.1',
-    port: 6379,
+    host: CONFIG.redisHost,
+    port: CONFIG.redisPort,
     reconnectStrategy: (retries) => {
       console.warn(`Redis client reconnecting... Attempt #${retries}`)
       if (retries > 10) {
@@ -31,11 +32,3 @@ client.on('end', () => {
 await client.connect()
 
 export { client }
-
-export const config = {
-  port: process.env.PORT || 3000,
-  weatherApiKey: process.env.WEATHER_API_KEY,
-  apiBaseUrl: process.env.WEATHER_URL,
-  redisHost: process.env.REDIS_HOST || '127.0.0.1',
-  redisPort: process.env.REDIS_PORT || 6379
-}

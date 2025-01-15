@@ -1,6 +1,7 @@
 import { app } from './app.js'
+import { CONFIG } from './config/envConfig.js'
 
-const PORT = 3000
+const PORT = CONFIG.port
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

@@ -8,9 +8,7 @@ export const getWeatherByCity = async (req, res, next) => {
 
   try {
     const cachedData = await getCachedWeatherData(city)
-    if (cachedData) {
-      return res.status(200).json(cachedData)
-    }
+    if (cachedData) return res.status(200).json(cachedData)
 
     const weatherData = await getCityWhetherFromAPI(city)
 
@@ -25,6 +23,7 @@ export const getWeatherByCity = async (req, res, next) => {
 const getCachedWeatherData = async (city) => {
   try {
     const cachedData = await getDataFromCache(city)
+
     if (cachedData) {
       console.log(`Cache hit for city: ${city}`)
     } else {
